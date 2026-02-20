@@ -18,8 +18,10 @@ $bills = $bills_query->get_result();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statement of Account</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -37,17 +39,24 @@ $bills = $bills_query->get_result();
     </div>
 
     <div class="nav-links">
-        <a href="home.php">Home</a>
+        <a href="home.php" class="<?php echo ($current_page == 'home') ? 'active' : ''; ?>">Home</a>
         <span class="divider">|</span>
         <a href="view_bill.php" class="active">View Bill</a>
         <span class="divider">|</span>
-        <a href="pay_bill.php">Pay Bill</a>
+        <a href="pay_bill.php" class="<?php echo ($current_page == 'pay_bill') ? 'active' : ''; ?>">Pay Bill</a>
         <span class="divider">|</span>
-        <a href="account.php">Account</a>
+        <!-- ACCOUNT ICON -->
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="account.php">
+                <div class="account-icon">
+                    <img src="assets/account-icon.png" alt="Account">
+                </div>
+            </a>
+        <?php endif; ?>
     </div>
 </header>
 
-<!-- PAGE CONTENT WRAPPER (Fixes Footer Issue) -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content">
 
     <div class="statement-wrapper">
