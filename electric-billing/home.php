@@ -7,8 +7,10 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Angeles Electric</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -30,7 +32,15 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
         <a href="view_bill.php">View Bill</a>
         <span class="divider">|</span>
         <a href="pay_bill.php">Pay Bill</a>
-        <div class="account-icon">👤</div>
+        <span class="divider">|</span>
+        <!-- ACCOUNT ICON -->
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="account.php">
+                <div class="account-icon">
+                    <img src="assets/account-icon.png" alt="Account">
+                </div>
+            </a>
+        <?php endif; ?>
     </div>
 </header>
 
@@ -86,6 +96,7 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
     <div class="advisory-cards">
 
         <?php
+        // Fetch the latest 3 advisories from the database
         $ads = $conn->query("SELECT * FROM advisories ORDER BY created_at DESC LIMIT 3");
         while($row = $ads->fetch_assoc()){
         ?>
@@ -116,6 +127,6 @@ function scrollToAdvisories(){
 }
 </script>
 
-
 </body>
 </html>
+
