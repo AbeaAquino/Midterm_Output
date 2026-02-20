@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angeles Electric Corporation</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -16,9 +18,12 @@
         </div>
     </div>
 
-    <div class="nav-buttons">
-        <a href="login.php" class="btn-login">Log In</a>
-        <a href="signup.php" class="btn-signup">Sign Up</a>
+    <div class="nav-links">
+        <!-- Only show Login and Sign Up buttons when logged out -->
+        <?php if (!isset($_SESSION['user_id'])): ?>
+            <a href="login.php" class="btn-nav">Log In</a>
+            <a href="signup.php" class="btn-nav btn-signup">Sign Up</a>
+        <?php endif; ?>
     </div>
 </header>
 
@@ -31,7 +36,7 @@
             Powering your home with reliable electric service,
             easy online billing, and timely service updates—all in one place.
         </p>
-        <a href="signup.php" class="btn-getstarted">Get Started</a>
+        <a href="access_selection.php" class="btn-getstarted">Get Started</a>  <!-- Link to Access Selection Page -->
     </div>
 
     <!-- HOME FEATURE CARDS -->
@@ -62,3 +67,4 @@
 
 </body>
 </html>
+
