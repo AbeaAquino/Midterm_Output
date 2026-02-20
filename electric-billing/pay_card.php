@@ -3,13 +3,28 @@ include 'config/database.php';
 include 'includes/auth.php';
 
 $user_id = $_SESSION['user_id'];
-$bill_id = $_POST['bill_id'];
-$method = $_POST['method'];
 
+// Check if the GET parameters are set
+if (!isset($_GET['bill_id']) || !isset($_GET['method'])) {
+    // Handle error if the parameters are missing
+    echo "Error: Missing payment information.";
+    exit();
+}
+
+$bill_id = $_GET['bill_id'];  // Bill ID from the URL
+$method = $_GET['method'];    // Payment method from the URL
+
+// Get the bill details
 $bill_query = $conn->prepare("SELECT * FROM bills WHERE id=?");
-$bill_query->bind_param("i",$bill_id);
+$bill_query->bind_param("i", $bill_id);
 $bill_query->execute();
 $bill = $bill_query->get_result()->fetch_assoc();
+
+// Get the user details
+$user_query = $conn->prepare("SELECT name, email FROM users WHERE id=?");
+$user_query->bind_param("i", $user_id);
+$user_query->execute();
+$user = $user_query->get_result()->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +33,9 @@ $bill = $bill_query->get_result()->fetch_assoc();
     <title>Card Payment</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="bg-image">
 
+<!-- HEADER -->
 <header class="header">
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
@@ -30,33 +46,51 @@ $bill = $bill_query->get_result()->fetch_assoc();
     </div>
 </header>
 
-<div class="payment-wrapper">
+<!-- PAGE CONTENT -->
+<div class="page-content">
 
-    <div class="payment-card">
+    <div class="payment-wrapper">
+        <div class="payment-card">
 
-        <h2>Credit / Debit Card</h2>
+            <h2>Credit / Debit Card</h2>
 
-        <div class="bill-overview">
-            <p><strong>Amount:</strong> ₱<?php echo number_format($bill['amount'],2); ?></p>
-            <p><strong>Date:</strong> <?php echo $bill['month']; ?></p>
+            <!-- BILL OVERVIEW -->
+            <div class="bill-overview">
+                <p><strong>Amount:</strong> ₱<?php echo number_format($bill['amount'], 2); ?></p>
+                <p><strong>Date:</strong> <?php echo $bill['month']; ?></p>
+            </div>
+
+            <!-- CARD PAYMENT FORM -->
+            <form method="POST" action="process_payment.php">
+                <input type="hidden" name="bill_id" value="<?php echo $bill_id; ?>">
+                <input type="hidden" name="method" value="Card">
+
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" name="card_number" placeholder="Card Number" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Expiry (MM/YY)</label>
+                    <input type="text" name="expiry" placeholder="MM/YY" required>
+                </div>
+
+                <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" name="cvv" placeholder="CVV" required>
+                </div>
+
+                <div class="center-btn">
+                    <button type="submit" class="btn-confirm">PAY</button>
+                </div>
+            </form>
+
         </div>
-
-        <form method="POST" action="process_payment.php">
-
-            <input type="hidden" name="bill_id" value="<?php echo $bill_id; ?>">
-            <input type="hidden" name="method" value="<?php echo $method; ?>">
-
-            <input type="text" placeholder="Card Number" required>
-            <input type="text" placeholder="Expiry (MM/YY)" required>
-            <input type="text" placeholder="CVV" required>
-
-            <button class="btn-primary">Pay</button>
-        </form>
-
     </div>
 
 </div>
 
+<!-- FOOTER -->
 <footer class="footer">
     © 2026 Angeles Electric Corporation
 </footer>
