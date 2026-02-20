@@ -1,4 +1,4 @@
-<?php
+<?php 
 include 'config/database.php';
 include 'includes/auth.php';
 
@@ -25,6 +25,7 @@ $bills = $bills_query->get_result();
 </head>
 <body class="bg-image">
 
+<!-- HEADER -->
 <header class="header">
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
@@ -40,68 +41,114 @@ $bills = $bills_query->get_result();
         <a href="view_bill.php">View Bill</a>
         <span class="divider">|</span>
         <a href="pay_bill.php" class="active">Pay Bill</a>
-        <div class="account-icon">👤</div>
+        <!-- ACCOUNT ICON - Clickable -->
+        <a href="account.php">
+            <div class="account-icon">👤</div>
+        </a>
     </div>
 </header>
 
-<div class="glass-wrapper">
+<!-- PAGE CONTENT WRAPPER (Fixes Footer Issue) -->
+<div class="page-content">
 
-    <div class="glass-card">
+    <div class="glass-wrapper">
 
-        <!-- USER -->
-        <div class="profile-header">
-            <div class="profile-avatar"></div>
-            <div>
-                <h3><?php echo $user['name']; ?></h3>
-                <span><?php echo $user['email']; ?></span>
+        <div class="glass-card">
+
+            <!-- USER INFO -->
+            <div class="profile-header">
+                <div class="profile-avatar"></div>
+                <div>
+                    <h3><?php echo $user['name']; ?></h3>
+                    <span><?php echo $user['email']; ?></span>
+                </div>
             </div>
-        </div>
 
-        <!-- BLUE STRIP -->
-        <div class="glass-top">
-            Payment Details
-        </div>
+            <!-- BLUE STRIP -->
+            <div class="glass-top">
+                Payment Details
+            </div>
 
-        <div class="glass-content">
+            <div class="glass-content">
 
-            <form method="POST" action="pay_card.php">
+                <form method="POST" action="">
 
-                <div class="form-group">
-                    <label>Month</label>
-                    <select name="bill_id" required>
-                        <?php while($bill = $bills->fetch_assoc()){ ?>
-                        <option value="<?php echo $bill['id']; ?>">
-                            <?php echo $bill['month']; ?>
-                        </option>
-                        <?php } ?>
-                    </select>
-                </div>
+                    <!-- MONTH -->
+                    <div class="form-group">
+                        <label>Month</label>
 
-                <div class="form-group">
-                    <label>Payment Method</label>
+                        <select name="bill_id" required <?php if($bills->num_rows == 0) echo 'disabled'; ?>>
 
-                    <div class="method-row">
+                            <?php if($bills->num_rows > 0){ ?>
 
-                        <label class="payment-box">
-                            <input type="radio" name="method" value="GCash" required>
-                            <img src="assets/gcash.png">
-                            <span>E-Wallet</span>
-                        </label>
+                                <?php while($bill = $bills->fetch_assoc()){ ?>
+                                    <option value="<?php echo $bill['id']; ?>">
+                                        <?php echo $bill['month']; ?> 
+                                        - ₱<?php echo number_format($bill['amount'],2); ?>
+                                    </option>
+                                <?php } ?>
 
-                        <label class="payment-box">
-                            <input type="radio" name="method" value="Card" required>
-                            <img src="assets/mastercard.png">
-                            <span>Credit/Debit Card</span>
-                        </label>
+                            <?php } else { ?>
 
+                                <option selected>No unpaid bills available</option>
+
+                            <?php } ?>
+
+                        </select>
                     </div>
-                </div>
 
-                <div class="center-btn">
-                    <button class="btn-confirm">CONFIRM</button>
-                </div>
+                    <!-- PAYMENT METHOD -->
+                    <div class="form-group">
+                        <label>Payment Method</label>
 
-            </form>
+                        <div class="method-row">
+
+                            <!-- E-Wallet Payment -->
+                            <label class="payment-box">
+                                <input type="radio" name="method" value="GCash" 
+                                <?php if($bills->num_rows == 0) echo 'disabled'; ?> required>
+                                <img src="assets/gcash.png">
+                                <span>E-Wallet</span>
+                            </label>
+
+                            <!-- Credit/Debit Card Payment -->
+                            <label class="payment-box">
+                                <input type="radio" name="method" value="Card" 
+                                <?php if($bills->num_rows == 0) echo 'disabled'; ?> required>
+                                <img src="assets/mastercard.png">
+                                <span>Credit/Debit Card</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- CONFIRM BUTTON -->
+                    <div class="center-btn">
+                        <button type="submit" name="pay_method" class="btn-confirm" 
+                        <?php if($bills->num_rows == 0) echo 'disabled'; ?>>
+                            CONFIRM
+                        </button>
+                    </div>
+
+                </form>
+
+                <?php 
+                // Handle payment method and redirect accordingly
+                if(isset($_POST['pay_method'])){
+                    $method = $_POST['method'];
+                    if($method == 'GCash'){
+                        // Redirect to E-Wallet Payment Page (pay_wallet.php)
+                        header("Location: pay_wallet.php?bill_id=".$_POST['bill_id']."&method=GCash");
+                        exit();
+                    } else if($method == 'Card'){
+                        // Redirect to Card Payment Page (pay_card.php)
+                        header("Location: pay_card.php?bill_id=".$_POST['bill_id']."&method=Card");
+                        exit();
+                    }
+                }
+                ?>
+
+            </div>
 
         </div>
 
@@ -109,10 +156,11 @@ $bills = $bills_query->get_result();
 
 </div>
 
+<!-- FOOTER -->
 <footer class="footer">
     © 2026 Angeles Electric Corporation
 </footer>
 
 </body>
-
 </html>
+
