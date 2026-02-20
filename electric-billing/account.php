@@ -23,7 +23,7 @@ $due = $due_query->get_result()->fetch_assoc();
     <title>Account Profile</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="bg-image">
 
 <!-- HEADER -->
 <header class="header">
@@ -45,73 +45,80 @@ $due = $due_query->get_result()->fetch_assoc();
     </div>
 </header>
 
-<div class="account-wrapper">
+<!-- PAGE CONTENT WRAPPER (Fixes Footer Issue) -->
+<div class="page-content">
 
-    <div class="account-card">
+    <div class="account-wrapper">
 
-        <!-- USER INFO -->
-        <div class="account-user">
-            <div class="account-avatar"></div>
-            <div>
-                <h3><?php echo $user['name']; ?></h3>
-                <span><?php echo $user['email']; ?></span>
+        <div class="account-card">
+
+            <!-- USER INFO -->
+            <div class="account-user">
+                <div class="account-avatar"></div>
+                <div>
+                    <h3><?php echo $user['name']; ?></h3>
+                    <span><?php echo $user['email']; ?></span>
+                </div>
             </div>
-        </div>
 
-        <!-- BLUE STRIP -->
-        <div class="account-top">
-            Statement Date: <?php echo date("F d, Y"); ?><br>
-            Account Number: <?php echo $user['account_number']; ?>
-        </div>
+            <!-- BLUE STRIP -->
+            <div class="account-top">
+                Statement Date: <?php echo date("F d, Y"); ?><br>
+                Account Number: <?php echo $user['account_number']; ?>
+            </div>
 
-        <!-- DETAILS -->
-        <div class="account-details">
-            <strong>Address:</strong> <?php echo $user['address']; ?><br>
-            <strong>Contact No:</strong> <?php echo $user['contact_no']; ?>
-        </div>
+            <!-- DETAILS -->
+            <div class="account-details">
+                <strong>Address:</strong> <?php echo $user['address']; ?><br>
+                <strong>Contact No:</strong> <?php echo $user['contact_no']; ?>
+            </div>
 
-        <!-- AMOUNT SECTION -->
-        <div class="amount-section">
-            <div>
-                <div>Amount Due</div>
+            <!-- AMOUNT SECTION -->
+            <div class="amount-section">
+                <div>
+                    <div>Amount Due</div>
 
-                <div class="amount-box">
-                    ₱ 
-                    <?php 
-                        if($due){
-                            echo number_format($due['amount'],2);
-                        } else {
-                            echo "0.00";
-                        }
-                    ?>
+                    <div class="amount-box">
+                        ₱ 
+                        <?php 
+                            if($due){
+                                echo number_format($due['amount'],2);
+                            } else {
+                                echo "0.00";
+                            }
+                        ?>
+                    </div>
+
+                    <a href="view_bill.php">
+                        <button class="viewbill-btn">View Bill</button>
+                    </a>
                 </div>
 
-                <a href="view_bill.php">
-                    <button class="viewbill-btn">View Bill</button>
-                </a>
+                <div class="due-box">
+                    Due Date
+                    <strong>
+                    <?php 
+                        if($due){
+                            echo $due['due_date'];
+                        } else {
+                            echo "No Due";
+                        }
+                    ?>
+                    </strong>
+                </div>
             </div>
 
-            <div class="due-box">
-                Due Date
-                <strong>
-                <?php 
-                    if($due){
-                        echo $due['due_date'];
-                    } else {
-                        echo "No Due";
-                    }
-                ?>
-                </strong>
-            </div>
         </div>
 
     </div>
 
 </div>
 
+<!-- FOOTER -->
 <footer class="footer">
     © 2026 Angeles Electric Corporation
 </footer>
 
 </body>
 </html>
+
