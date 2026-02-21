@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
@@ -19,7 +18,6 @@
     </div>
 
     <div class="nav-links">
-        <!-- Only show Login and Sign Up buttons when logged out -->
         <?php if (!isset($_SESSION['user_id'])): ?>
             <a href="access_selection.php" class="btn-nav-outline">Log In</a>
             <a href="signup.php" class="btn-nav-solid">Sign Up</a>
@@ -27,7 +25,6 @@
     </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
     <div class="hero-content">
         <div class="yellow-line"></div>
@@ -39,7 +36,7 @@
         <a href="access_selection.php" class="btn-getstarted">Get Started</a>
     </div>
 
-    <!-- HOME FEATURE CARDS -->
+    <!-- FEATURE CARDS -->
     <div class="feature-cards">
         <div class="feature-card">
             <img src="assets/icon-bill.png">
@@ -60,12 +57,10 @@
         </div>
     </div>
 
-    <!-- WAVES -->
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
 </section>
 
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
