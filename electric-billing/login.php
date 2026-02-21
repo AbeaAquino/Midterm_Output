@@ -13,7 +13,6 @@ if(isset($_POST['login'])){
     if($result->num_rows > 0){
         $user = $result->fetch_assoc();
 
-        // ✅ Direct comparison (no hashing)
         if($password === $user['password']){
             $_SESSION['user_id'] = $user['id'];
             header("Location: home.php");
@@ -38,11 +37,13 @@ if(isset($_POST['login'])){
 
 <header class="header">
     <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
-        <div>
-            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
-            <span>Powering Your Future</span>
-        </div>
+        <a href="index.php" class="logo-area" style="text-decoration:none; color:white;">
+            <img src="assets/logo.png" class="logo" alt="Logo">
+            <div>
+                <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+                <span>Powering Your Future</span>
+            </div>
+        </a>
     </div>
 </header>
 
@@ -58,13 +59,12 @@ if(isset($_POST['login'])){
         </form>
 
         <p class="auth-link">
-            Don’t have an account?
+            Don't have an account?
             <a href="signup.php">Sign up</a>
         </p>
     </div>
 </div>
 
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
