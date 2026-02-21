@@ -8,14 +8,15 @@
 </head>
 <body class="bg-image">
 
-<!-- HEADER -->
 <header class="header">
     <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
-        <div>
-            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
-            <span>Powering Your Future</span>
-        </div>
+        <a href="index.php" class="logo-area" style="text-decoration:none; color:white;">
+            <img src="assets/logo.png" class="logo" alt="Logo">
+            <div>
+                <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+                <span>Powering Your Future</span>
+            </div>
+        </a>
     </div>
 </header>
 
@@ -24,14 +25,11 @@
     <h2>Portal Access Selection</h2>
     <p>Please select how you wish to proceed.</p>
     <div class="access-options">
-        <a href="admin_login.php" class="access-btn">Admin</a>  <!-- Redirect to Admin Login -->
-        <a href="login.php" class="access-btn">User</a>  <!-- Redirect to User Login -->
+        <a href="admin_login.php" class="access-btn">Admin</a> 
+        <a href="login.php" class="access-btn">User</a>
     </div>
 </section>
 
-<!-- FOOTER -->
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
-
