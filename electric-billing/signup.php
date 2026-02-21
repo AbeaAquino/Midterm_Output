@@ -8,14 +8,15 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
-        <div>
-            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
-            <span>Powering Your Future</span>
-        </div>
+        <a href="index.php" class="logo-area" style="text-decoration:none; color:white;">
+            <img src="assets/logo.png" class="logo" alt="Logo">
+            <div>
+                <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+                <span>Powering Your Future</span>
+            </div>
+        </a>
     </div>
 </header>
 
@@ -23,7 +24,6 @@
 include 'config/database.php';
 
 if(isset($_POST['signup'])){
-
     $name     = $_POST['name'];
     $email    = $_POST['email'];
     $password = $_POST['password'];
@@ -47,19 +47,9 @@ if(isset($_POST['signup'])){
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-
 <div class="auth-container">
-
     <div class="auth-card">
         <h2>Create Account</h2>
-
         <form method="POST">
             <input type="text"     name="name"       placeholder="NAME"           required>
             <input type="email"    name="email"       placeholder="EMAIL"          required>
@@ -85,6 +75,5 @@ if(isset($_POST['signup'])){
 </div>
 
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
