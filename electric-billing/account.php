@@ -26,15 +26,12 @@ $due = $due_query->get_result()->fetch_assoc();
     <link rel="stylesheet" href="assets/style.css">
 </head>
 
-<body class="bg-image">
-
 <?php include 'includes/header.php'; ?>
 
-<!-- ACCOUNT DROPDOWN (ONLY IN ACCOUNT PAGE) -->
+<!-- ACCOUNT DROPDOWN -->
 <div class="account-wrapper-nav" id="accountNav">
 
     <div class="account-dropdown">
-
         <!-- USER INFO -->
         <div class="dropdown-header">
             <div class="dropdown-avatar">
@@ -75,14 +72,15 @@ $due = $due_query->get_result()->fetch_assoc();
     </div>
 </div>
 
-<!-- PAGE CONTENT -->
-<div class="page-content">
 
+<div class="page-content">
     <div class="account-wrapper">
         <div class="account-card">
 
             <div class="account-user">
-                <div class="account-avatar"></div>
+                <div class="account-avatar">
+                    <img src="assets/user.png" alt="User">
+                </div>
                 <div>
                     <h3><?= htmlspecialchars($user['name']); ?></h3>
                     <span><?= htmlspecialchars($user['email']); ?></span>
@@ -117,10 +115,8 @@ $due = $due_query->get_result()->fetch_assoc();
                     </strong>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
 
 <?php include 'includes/footer.php'; ?>
@@ -147,6 +143,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 </script>
-
 </body>
 </html>
