@@ -5,33 +5,48 @@ if(isset($_POST['login'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id,password FROM users WHERE email=?");
-    $stmt->bind_param("s",$email);
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email=?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows > 0){
         $user = $result->fetch_assoc();
-        if(password_verify($password,$user['password'])){
+
+        // ✅ Direct comparison (no hashing)
+        if($password === $user['password']){
             $_SESSION['user_id'] = $user['id'];
             header("Location: home.php");
+            exit();
         } else {
             echo "<script>alert('Wrong Password');</script>";
         }
+    } else {
+        echo "<script>alert('User not found');</script>";
     }
 }
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<div class="auth-container">
+<header class="header">
+    <div class="logo-area">
+        <img src="assets/logo.png" class="logo">
+        <div>
+            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+            <span>Powering Your Future</span>
+        </div>
+    </div>
+</header>
 
+<div class="auth-container">
     <div class="auth-card">
         <div class="auth-avatar"></div>
         <h2>Log In</h2>
@@ -39,7 +54,6 @@ if(isset($_POST['login'])){
         <form method="POST">
             <input type="email" name="email" placeholder="EMAIL ADDRESS" required>
             <input type="password" name="password" placeholder="PASSWORD" required>
-
             <button type="submit" name="login" class="btn-auth">LOG IN</button>
         </form>
 
@@ -48,9 +62,9 @@ if(isset($_POST['login'])){
             <a href="signup.php">Sign up</a>
         </p>
     </div>
-
 </div>
+
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>
-
