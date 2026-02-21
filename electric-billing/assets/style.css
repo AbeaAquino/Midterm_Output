@@ -24,13 +24,10 @@ body{
 }
 
 /* ================= PAGE STRUCTURE ================= */
-
-/* This pushes footer to bottom */
 .page-content{
     flex:1;
 }
 
-/* Background image version */
 .bg-image{
     background:url('../assets/bg.png') no-repeat center center fixed;
     background-size:cover;
@@ -38,9 +35,8 @@ body{
 
 
 /* ================= GLOBAL HEADER ================= */
-
 .header{
-    background:#173a7a; /* cleaner solid blue */
+    background:#173a7a;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -56,7 +52,7 @@ body{
 }
 
 .logo{
-    width:70px; /* bigger logo */
+    width:70px;
 }
 
 .logo-area h1{
@@ -71,34 +67,30 @@ body{
 }
 
 /* ================= NAVIGATION ================= */
-
 .nav-links{
     display:flex;
     align-items:center;
     gap:18px;
 }
 
-/* FIX LINK COLOR */
 .nav-links a{
-    color:#ffffff !important;   /* force white */
+    color:#ffffff !important;
     text-decoration:none;
     font-size:15px;
     font-weight:500;
     transition:0.3s;
 }
 
-/* HOVER */
-.nav-links a:hover{
-    color:#ffd700 !important;
+/* Only apply yellow hover to normal nav links, NOT auth buttons */
+.nav-links a:not(.btn-nav-outline):not(.btn-nav-solid):hover {
+    color: #ffd700 !important;
 }
 
-/* ACTIVE PAGE */
 .nav-links a.active{
     color:#ffd700 !important;
     font-weight:600;
 }
 
-/* SEPARATOR */
 .divider{
     color:#ffffff;
     opacity:0.5;
@@ -108,7 +100,7 @@ body{
 .account-icon{
     width:36px;
     height:36px;
-    background:#ffd700;  /* brighter */
+    background:#ffd700;
     color:#173a7a;
     border-radius:50%;
     display:flex;
@@ -116,8 +108,117 @@ body{
     align-items:center;
     font-size:16px;
     font-weight:bold;
-    margin-left:15px;
     cursor:pointer;
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+
+.account-icon:hover{
+    transform:scale(1.08);
+    box-shadow:0 4px 14px rgba(255,215,0,0.5);
+}
+
+/* ================= ACCOUNT DROPDOWN ================= */
+.account-wrapper-nav{
+    position:relative;
+}
+
+.account-dropdown{
+    display:none;
+    position:absolute;
+    top:calc(100% + 12px);
+    right: 30px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    min-width:200px;
+    z-index:999;
+    overflow:hidden;
+    animation:dropIn 0.2s ease;
+}
+
+@keyframes dropIn{
+    from{ opacity:0; transform:translateY(-8px); }
+    to{   opacity:1; transform:translateY(0); }
+}
+
+.account-wrapper-nav.open .account-dropdown{
+    display:block;
+}
+
+.dropdown-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    border-bottom:1px solid #eee;
+}
+
+.dropdown-avatar{
+    width:36px;
+    height:36px;
+    background:#ddd;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.dropdown-header-info h4{
+    font-size:13px;
+    font-weight:700;
+    color:#222;
+    margin:0;
+}
+
+.dropdown-header-info span{
+    font-size:11px;
+    color:#888;
+}
+
+/* Override .nav-links a white color inside dropdown */
+.account-dropdown .dropdown-item,
+.account-dropdown .dropdown-item:link,
+.account-dropdown .dropdown-item:visited,
+.account-dropdown .dropdown-item:hover,
+.account-dropdown .dropdown-item:active{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 16px;
+    font-size:13px;
+    font-weight:500;
+    color:#333 !important;
+    text-decoration:none !important;
+    border-bottom:none !important;
+    transition:background 0.2s;
+    border:none;
+    background:none;
+    width:100%;
+    cursor:pointer;
+}
+
+.account-dropdown .dropdown-item:hover{
+    background:#f4f6fb !important;
+    color:#333 !important;
+}
+
+.account-dropdown .dropdown-item svg{
+    width:16px;
+    height:16px;
+    flex-shrink:0;
+}
+
+.account-dropdown .dropdown-item.logout,
+.account-dropdown .dropdown-item.logout:link,
+.account-dropdown .dropdown-item.logout:visited{
+    color:#e53935 !important;
+    border-top:1px solid #eee;
+}
+
+.account-dropdown .dropdown-item.logout:hover{
+    background:#fff5f5 !important;
+    color:#e53935 !important;
 }
 
 
@@ -127,7 +228,7 @@ body{
     background:url('../assets/bg.png') no-repeat center center/cover;
     min-height:100vh;
     color:white;
-    padding:120px 80px 220px 80px; /* extra bottom space */
+    padding:120px 80px 220px 80px;
     overflow:hidden;
 }
 
@@ -173,6 +274,9 @@ body{
     border-radius:6px;
     font-weight:700;
     text-decoration:none;
+    border:none;
+    cursor:pointer;
+    font-size: 16px;
 }
 
 /* ================= FEATURE CARDS ================= */
@@ -234,7 +338,7 @@ body{
 /* ================= AUTH PAGES ================= */
 .auth-container{
     background:url('../assets/bg.png') no-repeat center center/cover;
-    height:100vh;
+    min-height: calc(100vh - 120px);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -252,38 +356,70 @@ body{
 .auth-card{
     position:relative;
     background:rgba(255,255,255,0.97);
-    width:400px;
-    padding:40px;
+    width:420px;
+    padding:50px 44px;
     border-radius:25px;
     text-align:center;
     box-shadow:0 20px 50px rgba(0,0,0,0.3);
 }
 
+.auth-card h2{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:28px;
+    color:#111;
+}
+
 .auth-card input{
     width:100%;
-    padding:12px;
-    margin-bottom:15px;
-    border-radius:6px;
-    border:1px solid #ccc;
+    padding:13px 16px;
+    margin-bottom:16px;
+    border-radius:8px;
+    border:1.5px solid #dde1ea;
+    font-size:14px;
+    background:#f8f9fc;
+    color:#222;
+    letter-spacing:0.3px;
+    outline:none;
+    transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.auth-card input::placeholder{
+    color:#aaa;
+    font-size:13px;
+    letter-spacing:0.8px;
+}
+
+.auth-card input:focus{
+    border-color:#173a7a;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(23,58,122,0.08);
 }
 
 .btn-auth{
     width:100%;
-    padding:12px;
+    padding:13px;
     background:#ffd700;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
     font-weight:bold;
+    font-size:14px;
+    letter-spacing:0.8px;
     cursor:pointer;
+    margin-top:6px;
+    transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .btn-auth:hover{
     background:#ffcc00;
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(255,215,0,0.4);
 }
 
 .auth-link{
-    margin-top:15px;
+    margin-top:20px;
     font-size:14px;
+    color:#777;
 }
 
 .auth-link a{
@@ -291,6 +427,11 @@ body{
     font-weight:bold;
     text-decoration:none;
 }
+
+.auth-link a:hover{
+    opacity:0.75;
+}
+
 
 /* ================= ADVISORIES ================= */
 .advisories-section{
@@ -362,11 +503,11 @@ body{
     color:white;
     text-align:center;
     padding:18px;
+    margin-top:auto;
 }
 
 
 /* ================= STATEMENT OF ACCOUNT ================= */
-
 .statement-wrapper{
     display:flex;
     justify-content:center;
@@ -374,14 +515,13 @@ body{
 }
 
 .statement-card{
-    background:white;
+    background:rgba(255,255,255,0.95);
     width:750px;
     border-radius:25px;
     box-shadow:0 20px 50px rgba(0,0,0,0.15);
     overflow:hidden;
 }
 
-/* BLUE TOP STRIP */
 .statement-top{
     background:linear-gradient(to right,#00b4db,#004e92);
     padding:20px 30px;
@@ -392,7 +532,7 @@ body{
     display:flex;
     align-items:center;
     gap:15px;
-    padding:25px 30px 0px 30px;
+    padding: 25px 30px 25px 30px;
 }
 
 .statement-avatar{
@@ -411,11 +551,9 @@ body{
     color:#666;
 }
 
-/* TABLE */
 .statement-table{
     width:100%;
     border-collapse:collapse;
-    padding:20px 30px 40px 30px;
 }
 
 .statement-table th{
@@ -431,7 +569,6 @@ body{
     font-size:15px;
 }
 
-/* HIGHLIGHT UNPAID AMOUNT */
 .amount-unpaid{
     color:#f4b400;
     font-weight:700;
@@ -441,7 +578,6 @@ body{
     color:#333;
 }
 
-/* STATUS BADGES */
 .badge-paid{
     background:#4CAF50;
     color:white;
@@ -459,7 +595,6 @@ body{
 }
 
 /* ================= PAYMENT ================= */
-
 .payment-wrapper{
     display:flex;
     justify-content:center;
@@ -467,11 +602,12 @@ body{
 }
 
 .payment-card{
-    background:white;
-    width:600px;
-    padding:40px;
-    border-radius:25px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+    width:750px;
+    background:rgba(255,255,255,0.92);
+    border-radius:30px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
+    padding:30px;
+    overflow:hidden;
 }
 
 .payment-card h2{
@@ -518,7 +654,6 @@ body{
 }
 
 /* ================= ACCOUNT PROFILE ================= */
-
 .account-wrapper{
     display:flex;
     justify-content:center;
@@ -533,14 +668,12 @@ body{
     overflow:hidden;
 }
 
-/* BLUE TOP STRIP */
 .account-top{
     background:linear-gradient(to right,#00b4db,#004e92);
     padding:20px 30px;
     color:white;
 }
 
-/* USER INFO */
 .account-user{
     display:flex;
     align-items:center;
@@ -564,7 +697,6 @@ body{
     color:#666;
 }
 
-/* ACCOUNT DETAILS */
 .account-details{
     padding:10px 30px 20px 30px;
     font-size:14px;
@@ -572,7 +704,6 @@ body{
     color:#444;
 }
 
-/* AMOUNT DUE SECTION */
 .amount-section{
     display:flex;
     justify-content:space-between;
@@ -584,7 +715,7 @@ body{
 .amount-box{
     font-size:26px;
     font-weight:700;
-    color:#f4b400; /* yellow highlight */
+    color:#f4b400;
 }
 
 .due-box{
@@ -598,7 +729,6 @@ body{
     margin-top:5px;
 }
 
-/* VIEW BILL BUTTON */
 .viewbill-btn{
     background:#ffd700;
     padding:10px 25px;
@@ -614,7 +744,6 @@ body{
 }
 
 /* ================= PAYMENT CONTENT ================= */
-
 .payment-content{
     padding:30px 40px 50px 40px;
 }
@@ -633,8 +762,6 @@ body{
     border:1px solid #ccc;
     margin-bottom:25px;
 }
-
-/* PAYMENT METHOD BOXES */
 
 .payment-method-boxes{
     display:flex;
@@ -672,44 +799,13 @@ body{
     border-color:#004e92;
 }
 
-/* CONFIRM BUTTON CENTERED */
-
-.confirm-center{
-    text-align:center;
-}
-
-.btn-confirm{
-    background:#ffd700;
-    padding:12px 40px;
-    border:none;
-    border-radius:6px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.btn-confirm:hover{
-    background:#ffcc00;
-}
-
-
-.statement-card{
-    background:rgba(255,255,255,0.95);
-}
-
-/* ===== BACKGROUND IMAGE ===== */
-.bg-image{
-    background:url('../assets/bg.png') no-repeat center center fixed;
-    background-size:cover;
-}
-
-/* ===== GLASS CARD WRAPPER ===== */
+/* ================= GLASS CARD SYSTEM ================= */
 .glass-wrapper{
     display:flex;
     justify-content:center;
     padding:80px 20px;
 }
 
-/* ===== GLASS CARD ===== */
 .glass-card{
     width:750px;
     background:rgba(255,255,255,0.92);
@@ -718,12 +814,11 @@ body{
     overflow:hidden;
 }
 
-/* ===== PROFILE HEADER ===== */
 .profile-header{
     display:flex;
     align-items:center;
     gap:15px;
-    padding:25px 35px 15px 35px;
+    padding:25px 35px 25px 35px; 
 }
 
 .profile-avatar{
@@ -733,7 +828,15 @@ body{
     border-radius:50%;
 }
 
-/* ===== BLUE STRIP ===== */
+.profile-header h3{
+    font-size:18px;
+}
+
+.profile-header span{
+    font-size:14px;
+    color:#666;
+}
+
 .glass-top{
     background:linear-gradient(to right,#49c5c7,#0f4fb4);
     padding:18px 35px;
@@ -742,19 +845,19 @@ body{
     font-size:18px;
 }
 
-/* ===== CONTENT ===== */
 .glass-content{
     padding:35px 40px 50px 40px;
 }
 
 .form-group{
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .form-group label{
     display:block;
     margin-bottom:10px;
-    font-size:15px;
+    font-size:14px;
+    font-weight:600;
 }
 
 .form-group select{
@@ -764,7 +867,16 @@ body{
     border:1px solid #aaa;
 }
 
-/* ===== PAYMENT BOXES ===== */
+.form-group input{
+    width:100%;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    margin-top:5px;
+    font-size:14px;
+}
+
+/* ================= PAYMENT BOXES ================= */
 .method-row{
     display:flex;
     gap:30px;
@@ -794,14 +906,6 @@ body{
 
 .payment-box input{
     margin-bottom:10px;
-}
-
-/* SELECTED STYLE */
-.payment-box input:checked + img,
-.payment-box input:checked ~ span{
-}
-
-.payment-box input:checked{
     accent-color:#0f4fb4;
 }
 
@@ -809,125 +913,15 @@ body{
     border-color:#0f4fb4;
 }
 
-/* ===== CONFIRM BUTTON ===== */
+/* ================= CONFIRM BUTTON ================= */
+.confirm-center,
 .center-btn{
     text-align:center;
 }
 
 .btn-confirm{
     background:#ffd700;
-    padding:14px 60px;
-    border:none;
-    font-weight:bold;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-.btn-confirm:hover{
-    background:#ffcc00;
-}
-
-
-body{
-    background:url('../assets/bg.png') no-repeat center center fixed;
-    background-size:cover;
-}
-
-
-/* ================= PAGE LAYOUT ================= */
-.page-content{
-    flex:1;
-}
-
-/* ================= PAYMENT WRAPPER ================= */
-.payment-wrapper{
-    display:flex;
-    justify-content:center;
-    padding:80px 20px;
-}
-
-.payment-card{
-    width:750px;
-    background:rgba(255,255,255,0.92);
-    border-radius:30px;
-    box-shadow:0 30px 60px rgba(0,0,0,0.25);
-    padding:30px;
-    overflow:hidden;
-}
-
-/* ================= USER PROFILE ================= */
-.profile-header{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    padding-bottom:20px;
-}
-
-.profile-avatar{
-    width:70px;
-    height:70px;
-    background:#ddd;
-    border-radius:50%;
-}
-
-.profile-header h3{
-    font-size:18px;
-}
-
-.profile-header span{
-    font-size:14px;
-    color:#666;
-}
-
-/* ================= BLUE STRIP ================= */
-.glass-top{
-    background:linear-gradient(to right,#49c5c7,#0f4fb4);
-    padding:18px 35px;
-    color:white;
-    font-weight:600;
-    font-size:18px;
-    margin-bottom:20px;
-}
-
-/* ================= GLASS CONTENT ================= */
-.glass-content{
-    padding:20px;
-}
-
-.bill-overview{
-    margin-bottom:20px;
-}
-
-.bill-overview p{
-    font-size:16px;
-    line-height:1.5;
-}
-
-.form-group{
-    margin-bottom:20px;
-}
-
-.form-group label{
-    font-size:14px;
-    font-weight:600;
-}
-
-.form-group input{
-    width:100%;
-    padding:12px;
-    border-radius:6px;
-    border:1px solid #ccc;
-    margin-top:5px;
-    font-size:14px;
-}
-
-/* ================= PAYMENT BUTTON ================= */
-.center-btn{
-    text-align:center;
-}
-
-.btn-confirm{
-    background:#ffd700;
+    color:#0d2c6c;
     padding:14px 60px;
     border:none;
     font-weight:bold;
@@ -940,15 +934,6 @@ body{
     background:#ffcc00;
 }
 
-/* ================= FOOTER ================= */
-.footer{
-    background:#173a7a;
-    color:white;
-    text-align:center;
-    padding:18px;
-    margin-top:auto;
-}
-
 /* ================= ACCESS SELECTION ================= */
 .access-selection {
     text-align: center;
@@ -957,160 +942,383 @@ body{
 
 .access-selection h2 {
     font-size: 32px;
-    color: #fff;
-    margin-bottom: 20px;
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .access-selection p {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 40px;
+    color: #ffffff;
 }
 
 .access-options {
     display: flex;
-    justify-content: center;
-    gap: 40px;
+    flex-direction: column;
+    /* STACK VERTICALLY */
+    align-items: center;
+    /* center horizontally */
+    gap: 30px;
 }
 
 .access-btn {
-    background: #ffd700;
-    color: black;
-    padding: 20px 40px;
+    background: #ffffff;
+    color: #111;
+    padding: 22px 80px;
     font-size: 20px;
-    border-radius: 6px;
+    width: 320px;
+    padding: 22px 0;
+    border-radius: 18px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: 0.3s ease;
 }
 
 .access-btn:hover {
-    background: #ffcc00;
-}
-
-/* ================= ADMIN LOGIN ================= */
-.login-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.login-section form {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    border-radius: 25px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    width: 400px;
-    text-align: center;
-}
-
-.login-section h2 {
-    margin-bottom: 25px;
-}
-
-.login-section input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-.login-section button {
-    width: 100%;
-    padding: 12px;
-    background: #ffd700;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.login-section button:hover {
-    background: #ffcc00;
+    transform: translateY(-6px);
 }
 
 /* ================= DASHBOARD ================= */
+.dashboard-wrapper{
+    padding: 60px 80px 100px 80px;
+    display:flex;
+    justify-content:center;
+    padding:80px 20px;
+}
+
+.dashboard-card{
+    background:white;
+    width:750px;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+}
+
+.dashboard-card h2{
+    margin-bottom:25px;
+}
+
+/* ===============================
+   MANAGE BILLS - CANVA STYLE
+================================ */
+
+/* OUTER WRAPPER */
 .dashboard-wrapper {
+    padding: 60px 80px 120px 80px;
+}
+
+/* FLEX LAYOUT */
+.manage-container {
     display: flex;
-    justify-content: center;
-    padding: 80px 20px;
+    gap: 60px;
+    max-width: 1350px;
+    margin: 0 auto;
 }
 
-.dashboard-card {
-    background: white;
-    width: 750px;
-    padding: 40px;
-    border-radius: 25px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+/* GLASS CARDS */
+.manage-left,
+.manage-right {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
-.dashboard-card h2 {
-    margin-bottom: 25px;
+/* LEFT WIDTH */
+.manage-left {
+    flex: 0 0 370px;
+    padding-bottom: 30px;
 }
 
-/* ================= BILL MANAGEMENT ================= */
-.manage-bills {
-    padding: 30px 40px 50px 40px;
+/* RIGHT WIDTH */
+.manage-right {
+    flex: 1.2;
+    min-width: 720px;
 }
 
-.manage-bills label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.manage-bills select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-bottom: 25px;
-}
-
-/* ================= BILLING INFO LIST ================= */
-.bill-list-wrapper {
-    margin-top: 40px;
-    background: #f4f6fb;
-    padding: 20px;
-    border-radius: 12px;
-}
-
-.bill-list-wrapper table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.bill-list-wrapper th, .bill-list-wrapper td {
-    padding: 15px;
-    text-align: left;
-    font-size: 14px;
-}
-
-.bill-list-wrapper th {
-    background: #49c5c7;
+/* HEADER STRIP */
+.manage-left h2,
+.manage-right h2 {
+    margin: 0;
+    padding: 22px 28px;
+    background: linear-gradient(to right, #58c3c7, #2f6ebc);
     color: white;
+    font-size: 20px;
 }
 
-.bill-list-wrapper tr:nth-child(even) {
-    background: #f9f9f9;
+/* FORM AREA */
+.manage-left form {
+    padding: 25px 28px;
 }
 
-.bill-list-wrapper td {
-    border-top: 1px solid #ddd;
+.manage-left label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 14px;
 }
 
-.bill-list-wrapper .action-btn {
+.manage-left input,
+.manage-left select {
+    width: 100%;
+    padding: 11px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #f5f7fb;
+}
+
+/* BUTTON */
+.manage-left button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 13px;
     background: #ffd700;
-    color: black;
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-.bill-list-wrapper .action-btn:hover {
+.manage-left button:hover {
     background: #ffcc00;
 }
 
+/* TABLE AREA */
+.manage-right table {
+    width: calc(100% - 50px);
+    margin: 25px auto;
+}
+
+/* TABLE HEADER */
+.manage-right th {
+    background: #e9f4fb;
+    /* soft light blue */
+    color: #2f6ebc;
+    /* clean dark blue text */
+    font-weight: 600;
+    padding: 14px 18px;
+    text-align: left;
+}
+
+/* TABLE ROWS */
+.manage-right td {
+    padding: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.manage-right tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* PREVENT WRAP */
+.manage-right th,
+.manage-right td {
+    white-space: nowrap;
+}
+
+/* STATUS BADGES (MATCH VIEW BILL) */
+.status-paid {
+    background: #4CAF50;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-unpaid {
+    background: #f4b400;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-paid,
+.status-unpaid {
+    padding: 7px 18px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ================= SIGN UP EXTRAS ================= */
+
+/* Wider card for more fields */
+.auth-card.signup-card{
+    width:440px;
+}
+
+/* Date field label wrapper */
+.auth-field{
+    text-align:left;
+    margin-bottom:16px;
+}
+
+.auth-label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.8px;
+    color:#aaa;
+    margin-bottom:6px;
+    padding-left:2px;
+}
+
+.auth-field input[type="date"]{
+    width:100%;
+    padding:13px 16px;
+    border-radius:8px;
+    border:1.5px solid #dde1ea;
+    font-size:14px;
+    background:#f8f9fc;
+    color:#222;
+    outline:none;
+    margin-bottom:0;
+    transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.auth-field input[type="date"]:focus{
+    border-color:#173a7a;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(23,58,122,0.08);
+}
+
+/* ================= NAV AUTH BUTTONS (index page) ================= */
+
+/* Outlined - Log In */
+.btn-nav-outline {
+    padding: 9px 22px;
+    border-radius: 6px;
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.btn-nav-outline:hover {
+    background: #ffd700;
+    color: #173a7a !important;
+    /* dark blue text */
+}
+
+/* Solid - Sign Up */
+.btn-nav-solid {
+    padding: 9px 22px;
+    border-radius: 6px;
+    border: 2px solid #ffd700;
+    background: #ffd700;
+    color: #173a7a;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.btn-nav-solid:hover {
+    background: #ffcc00;
+    /* slightly darker yellow */
+    color: #173a7a !important;
+}
+
+/* ============================================
+   CARD PAYMENT - FINAL DESIGN
+============================================ */
+
+.card-payment-layout {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* LEFT SIDE */
+.bill-overview {
+    flex: 1;
+}
+
+.overview-box {
+    background: #f4f6fb;
+    padding: 35px 30px;
+    border-radius: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.overview-box label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* AMOUNT EMPHASIS */
+.overview-box h2 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    color: #f4b400;
+}
+
+/* DATE EMPHASIS */
+.overview-box h3 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    color: #f4b400;
+}
+
+/* RIGHT SIDE */
+.card-form {
+    flex: 2;
+}
+
+.card-form label {
+    display: block;
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.card-form input {
+    width: 100%;
+    padding: 13px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background: #f8f9fc;
+}
+
+.card-form input:focus {
+    outline: none;
+    border-color: #2f6ebc;
+    box-shadow: 0 0 0 3px rgba(47, 110, 188, 0.1);
+}
+
+.card-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 5px;
+}
+
+.card-row div {
+    flex: 1;
+}
+
+/* PAY BUTTON */
+.card-form .btn-confirm {
+    margin-top: 35px;
+    padding: 14px 70px;
+}
 
