@@ -16,12 +16,9 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
 <?php include 'includes/header.php'; ?>
 
-<!-- ================= HERO ================= -->
 <section class="hero">
-
     <div class="hero-content">
         <div class="yellow-line"></div>
         <h2>Powering Your Future</h2>
@@ -54,13 +51,12 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
 
     </div>
 
-    <!-- WAVES -->
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
 
 </section>
 
-<!-- ================= ADVISORIES SECTION ================= -->
+<!-- ADVISORIES SECTION -->
 <section class="advisories-section" id="advisories">
 
     <h2 class="adv-title">Advisories</h2>
@@ -87,10 +83,8 @@ $user = $conn->query("SELECT * FROM users WHERE id=$user_id")->fetch_assoc();
 
 </section>
 
-<!-- ================= FOOTER ================= -->
 <?php include 'includes/footer.php'; ?>
 
-<!-- ================= JS ================= -->
 <script>
 function scrollToAdvisories(){
     document.getElementById('advisories').scrollIntoView({
@@ -98,7 +92,5 @@ function scrollToAdvisories(){
     });
 }
 </script>
-
 </body>
 </html>
-
