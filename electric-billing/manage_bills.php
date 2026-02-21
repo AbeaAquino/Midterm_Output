@@ -6,7 +6,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     exit();
 }
 
-/* ================= INSERT BILL ================= */
+/* INSERT BILL */
 if(isset($_POST['create_bill'])){
 
     $user_id = $_POST['user_id'];
@@ -20,10 +20,10 @@ if(isset($_POST['create_bill'])){
     $stmt->execute();
 }
 
-/* ================= FETCH USERS ================= */
+/* FETCH USERS */
 $users = $conn->query("SELECT id, name, account_number FROM users");
 
-/* ================= FETCH BILLS ================= */
+/* FETCH BILLS */
 $bills = $conn->query("
     SELECT bills.*, users.name, users.account_number
     FROM bills
