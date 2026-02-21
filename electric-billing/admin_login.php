@@ -44,11 +44,13 @@ if(isset($_POST['admin_id'])){
 
 <header class="header">
     <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
-        <div>
-            <h1>ANGELES ELECTRIC CORPORATION</h1>
-            <span>Powering Your Future</span>
-        </div>
+        <a href="index.php" class="logo-area" style="text-decoration:none; color:white;">
+            <img src="assets/logo.png" class="logo" alt="Logo">
+            <div>
+                <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+                <span>Powering Your Future</span>
+            </div>
+        </a>
     </div>
 </header>
 
@@ -67,6 +69,5 @@ if(isset($_POST['admin_id'])){
 </div>
 
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
