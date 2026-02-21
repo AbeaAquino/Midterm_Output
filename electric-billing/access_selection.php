@@ -13,7 +13,7 @@
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
         <div>
-            <h1>ANGELES ELECTRIC CORPORATION</h1>
+            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
             <span>Powering Your Future</span>
         </div>
     </div>
@@ -25,14 +25,13 @@
     <p>Please select how you wish to proceed.</p>
     <div class="access-options">
         <a href="admin_login.php" class="access-btn">Admin</a>  <!-- Redirect to Admin Login -->
-        <a href="user_login.php" class="access-btn">User</a>  <!-- Redirect to User Login -->
+        <a href="login.php" class="access-btn">User</a>  <!-- Redirect to User Login -->
     </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
-    © 2026 Angeles Electric Corporation
-</footer>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>
+
