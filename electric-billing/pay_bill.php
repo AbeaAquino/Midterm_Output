@@ -16,37 +16,16 @@ $bills_query->bind_param("i",$user_id);
 $bills_query->execute();
 $bills = $bills_query->get_result();
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Online Payment</title>
+    <meta charset="UTF-8">
+    <title>Pay Bill</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-image">
+<body>
 
-<!-- HEADER -->
-<header class="header">
-    <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
-        <div>
-            <h1>ANGELES ELECTRIC CORPORATION</h1>
-            <span>Powering Your Future</span>
-        </div>
-    </div>
-
-    <div class="nav-links">
-        <a href="home.php">Home</a>
-        <span class="divider">|</span>
-        <a href="view_bill.php">View Bill</a>
-        <span class="divider">|</span>
-        <a href="pay_bill.php" class="active">Pay Bill</a>
-        <!-- ACCOUNT ICON - Clickable -->
-        <a href="account.php">
-            <div class="account-icon">👤</div>
-        </a>
-    </div>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <!-- PAGE CONTENT WRAPPER (Fixes Footer Issue) -->
 <div class="page-content">
@@ -84,7 +63,7 @@ $bills = $bills_query->get_result();
                                 <?php while($bill = $bills->fetch_assoc()){ ?>
                                     <option value="<?php echo $bill['id']; ?>">
                                         <?php echo $bill['month']; ?> 
-                                        - ₱<?php echo number_format($bill['amount'],2); ?>
+                                        
                                     </option>
                                 <?php } ?>
 
@@ -157,9 +136,7 @@ $bills = $bills_query->get_result();
 </div>
 
 <!-- FOOTER -->
-<footer class="footer">
-    © 2026 Angeles Electric Corporation
-</footer>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>
