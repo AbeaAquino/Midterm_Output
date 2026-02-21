@@ -1,3 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angeles Electric Corporation</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="logo-area">
+        <img src="assets/logo.png" class="logo">
+        <div>
+            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
+            <span>Powering Your Future</span>
+        </div>
+    </div>
+</header>
+
 <?php
 include 'config/database.php';
 
@@ -5,17 +26,22 @@ if(isset($_POST['signup'])){
 
     $name     = $_POST['name'];
     $email    = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
     $dob      = $_POST['dob'];
     $address  = $_POST['address'];
     $contact  = $_POST['contact_no'];
     $account  = rand(100000000, 999999999);
 
-    $stmt = $conn->prepare("INSERT INTO users(account_number,name,email,password,dob,address,contact_no) VALUES(?,?,?,?,?,?,?)");
+    $stmt = $conn->prepare("
+        INSERT INTO users(account_number,name,email,password,dob,address,contact_no)
+        VALUES(?,?,?,?,?,?,?)
+    ");
+
     $stmt->bind_param("sssssss", $account, $name, $email, $password, $dob, $address, $contact);
     $stmt->execute();
 
     $_SESSION['user_id'] = $stmt->insert_id;
+
     header("Location: home.php");
     exit();
 }
@@ -57,6 +83,8 @@ if(isset($_POST['signup'])){
     </div>
 
 </div>
+
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>
