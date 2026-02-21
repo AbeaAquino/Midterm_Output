@@ -27,52 +27,40 @@ $bills = $bills_query->get_result();
 
 <?php include 'includes/header.php'; ?>
 
-<!-- PAGE CONTENT WRAPPER (Fixes Footer Issue) -->
 <div class="page-content">
-
     <div class="glass-wrapper">
-
         <div class="glass-card">
 
             <!-- USER INFO -->
             <div class="profile-header">
-                <div class="profile-avatar"></div>
+                <div class="account-avatar">
+                    <img src="assets/user.png" alt="User">
+                </div>
                 <div>
                     <h3><?php echo $user['name']; ?></h3>
                     <span><?php echo $user['email']; ?></span>
                 </div>
             </div>
 
-            <!-- BLUE STRIP -->
             <div class="glass-top">
                 Payment Details
             </div>
 
             <div class="glass-content">
-
                 <form method="POST" action="">
-
                     <!-- MONTH -->
                     <div class="form-group">
                         <label>Month</label>
-
                         <select name="bill_id" required <?php if($bills->num_rows == 0) echo 'disabled'; ?>>
-
                             <?php if($bills->num_rows > 0){ ?>
-
                                 <?php while($bill = $bills->fetch_assoc()){ ?>
                                     <option value="<?php echo $bill['id']; ?>">
                                         <?php echo $bill['month']; ?> 
-                                        
                                     </option>
                                 <?php } ?>
-
                             <?php } else { ?>
-
                                 <option selected>No unpaid bills available</option>
-
                             <?php } ?>
-
                         </select>
                     </div>
 
@@ -101,7 +89,6 @@ $bills = $bills_query->get_result();
                         </div>
                     </div>
 
-                    <!-- CONFIRM BUTTON -->
                     <div class="center-btn">
                         <button type="submit" name="pay_method" class="btn-confirm" 
                         <?php if($bills->num_rows == 0) echo 'disabled'; ?>>
@@ -112,32 +99,26 @@ $bills = $bills_query->get_result();
                 </form>
 
                 <?php 
-                // Handle payment method and redirect accordingly
+                // Handle payment method
                 if(isset($_POST['pay_method'])){
                     $method = $_POST['method'];
                     if($method == 'GCash'){
-                        // Redirect to E-Wallet Payment Page (pay_wallet.php)
+                        // Redirect to E-Wallet Payment Page 
                         header("Location: pay_wallet.php?bill_id=".$_POST['bill_id']."&method=GCash");
                         exit();
                     } else if($method == 'Card'){
-                        // Redirect to Card Payment Page (pay_card.php)
+                        // Redirect to Card Payment Page
                         header("Location: pay_card.php?bill_id=".$_POST['bill_id']."&method=Card");
                         exit();
                     }
                 }
                 ?>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
-<!-- FOOTER -->
 <?php include 'includes/footer.php'; ?>
-
 </body>
 </html>
 
