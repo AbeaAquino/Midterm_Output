@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mobile_number = $_POST['mobile_number'];
 
     /* VALIDATE MOBILE NUMBER (11 DIGITS) */
-    if(!preg_match('/^[0-9]{11}$/', $mobile_number)){
+    if (!preg_match('/^[0-9]{11}$/', $mobile_number)) {
         echo "<script>alert('Mobile number must be exactly 11 digits.'); window.history.back();</script>";
         exit();
     }
@@ -28,18 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "SELECT * FROM bills WHERE id=? AND user_id=?"
     );
 
-    $bill_stmt->bind_param("ii",$bill_id,$user_id);
+    $bill_stmt->bind_param("ii", $bill_id, $user_id);
     $bill_stmt->execute();
 
     $bill = $bill_stmt->get_result()->fetch_assoc();
 
-    if(!$bill){
+    if (!$bill) {
         echo "Invalid bill.";
         exit();
     }
 
     $amount = $bill['amount'];
-    $reference = "REF".rand(10000,99999);
+    $reference = "REF" . rand(10000, 99999);
 
     /* INSERT PAYMENT */
     $pay_stmt = $conn->prepare("
@@ -64,13 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "UPDATE bills SET status='Paid' WHERE id=?"
     );
 
-    $update_stmt->bind_param("i",$bill_id);
+    $update_stmt->bind_param("i", $bill_id);
     $update_stmt->execute();
 
     header("Location: view_bill.php");
     exit();
 }
-
 
 /* CHECK PARAMETERS */
 if (!isset($_GET['method']) || !isset($_GET['bill_id'])) {
@@ -81,24 +80,22 @@ if (!isset($_GET['method']) || !isset($_GET['bill_id'])) {
 $method = $_GET['method'];
 $bill_id = $_GET['bill_id'];
 
-
 /* GET BILL */
 $bill_query = $conn->prepare(
     "SELECT * FROM bills WHERE id=? AND user_id=?"
 );
 
-$bill_query->bind_param("ii",$bill_id,$user_id);
+$bill_query->bind_param("ii", $bill_id, $user_id);
 $bill_query->execute();
 
 $bill = $bill_query->get_result()->fetch_assoc();
-
 
 /* GET USER */
 $user_query = $conn->prepare(
     "SELECT name,email FROM users WHERE id=?"
 );
 
-$user_query->bind_param("i",$user_id);
+$user_query->bind_param("i", $user_id);
 $user_query->execute();
 
 $user = $user_query->get_result()->fetch_assoc();
@@ -106,12 +103,11 @@ $user = $user_query->get_result()->fetch_assoc();
 
 <!DOCTYPE html>
 <html>
+
 <head>
-<title><?php echo $method; ?> Payment</title>
-<link rel="stylesheet" href="assets/style.css">
+    <title><?php echo $method; ?> Payment</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
-
-
 
 <header class="header">
 
@@ -153,91 +149,84 @@ $user = $user_query->get_result()->fetch_assoc();
     </div>
 </header>
 
-
 <div class="page-content">
 
-<div class="glass-wrapper">
+    <div class="glass-wrapper">
 
-<div class="glass-card">
+        <div class="glass-card">
 
+            <div class="profile-header">
 
-<div class="profile-header">
+                <div class="account-avatar">
+                    <img src="assets/user.png" alt="User">
+                </div>
 
-<div class="account-avatar">
-<img src="assets/user.png" alt="User">
-</div>
+                <div>
+                    <h3><?php echo $user['name']; ?></h3>
+                    <span><?php echo $user['email']; ?></span>
+                </div>
 
-<div>
-<h3><?php echo $user['name']; ?></h3>
-<span><?php echo $user['email']; ?></span>
-</div>
+            </div>
 
-</div>
+            <div class="glass-top">
+                <?php echo $method; ?> Payment
+            </div>
 
+            <div class="glass-content">
 
-<div class="glass-top">
-<?php echo $method; ?> Payment
-</div>
+                <div class="card-payment-layout">
 
+                    <!-- LEFT SIDE -->
+                    <div class="bill-overview">
 
-<div class="glass-content">
+                        <div class="overview-box">
+                            <label>Amount</label>
+                            <h2>₱ <?php echo number_format($bill['amount'], 2); ?></h2>
+                        </div>
 
-<div class="card-payment-layout">
+                        <div class="overview-box">
+                            <label>Date</label>
+                            <h3><?php echo $bill['billing_month']; ?></h3>
+                        </div>
 
+                    </div>
 
-<!-- LEFT SIDE -->
-<div class="bill-overview">
+                    <!-- RIGHT SIDE -->
+                    <div class="card-form">
 
-<div class="overview-box">
-<label>Amount</label>
-<h2>₱ <?php echo number_format($bill['amount'],2); ?></h2>
-</div>
+                        <form method="POST">
 
+                            <input type="hidden" name="bill_id" value="<?php echo $bill_id; ?>">
 
-<div class="overview-box">
-<label>Date</label>
-<h3><?php echo $bill['billing_month']; ?></h3>
-</div>
+                            <label>Mobile Number</label>
 
-</div>
+                            <input type="text"
+                                   name="mobile_number"
+                                   placeholder="Enter mobile number linked to your e-wallet account"
+                                   pattern="[0-9]{11}"
+                                   maxlength="11"
+                                   title="Mobile number must be exactly 11 digits"
+                                   required>
 
+                            <div class="center-btn">
 
-<!-- RIGHT SIDE -->
-<div class="card-form">
+                                <button type="submit" class="btn-confirm">
+                                    PAY
+                                </button>
 
-<form method="POST">
+                            </div>
 
-<input type="hidden" name="bill_id" value="<?php echo $bill_id; ?>">
+                        </form>
 
-<label>Mobile Number</label>
+                    </div>
 
-<input type="text"
-name="mobile_number"
-placeholder="Enter mobile number linked to your e-wallet account"
-pattern="[0-9]{11}"
-maxlength="11"
-title="Mobile number must be exactly 11 digits"
-required>
+                </div>
 
-<div class="center-btn">
+            </div>
 
-<button type="submit" class="btn-confirm">
-PAY
-</button>
+        </div>
 
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
