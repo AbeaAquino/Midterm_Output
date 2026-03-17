@@ -1,4 +1,4 @@
-```php
+```php id="7s6p2d"
 <?php
 include 'config/database.php';
 include 'includes/auth.php';
@@ -10,8 +10,7 @@ $user = $conn->query("
     WHERE id = $user_id
 ")->fetch_assoc();
 
-
-if(isset($_POST['update_profile'])){
+if (isset($_POST['update_profile'])) {
 
     $email   = $_POST['email'];
     $address = $_POST['address'];
@@ -23,7 +22,7 @@ if(isset($_POST['update_profile'])){
         WHERE id=?
     ");
 
-    $stmt->bind_param("sssi",$email,$address,$contact,$user_id);
+    $stmt->bind_param("sssi", $email, $address, $contact, $user_id);
     $stmt->execute();
 
     header("Location: account.php");
@@ -33,10 +32,11 @@ if(isset($_POST['update_profile'])){
 
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<title>Edit Profile</title>
-<link rel="stylesheet" href="assets/style.css">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="assets/style.css">
 
 </head>
 
@@ -44,62 +44,56 @@ if(isset($_POST['update_profile'])){
 
 <?php include 'includes/header.php'; ?>
 
-
 <div class="glass-wrapper">
 
-<div class="glass-card">
+    <div class="glass-card">
 
-<div class="glass-top">
-Edit Profile
-</div>
+        <div class="glass-top">
+            Edit Profile
+        </div>
 
+        <div class="glass-content">
 
-<div class="glass-content">
+            <form method="POST">
 
-<form method="POST">
+                <label>Email Address</label>
 
+                <input type="email"
+                       name="email"
+                       value="<?php echo $user['email']; ?>"
+                       required>
 
-<label>Email Address</label>
+                <label>Address</label>
 
-<input type="email"
-name="email"
-value="<?php echo $user['email']; ?>"
-required>
+                <input type="text"
+                       name="address"
+                       value="<?php echo $user['address']; ?>"
+                       required>
 
+                <label>Contact Number</label>
 
-<label>Address</label>
+                <input type="text"
+                       name="contact_no"
+                       value="<?php echo $user['contact_no']; ?>"
+                       required>
 
-<input type="text"
-name="address"
-value="<?php echo $user['address']; ?>"
-required>
+                <div class="center-btn">
 
+                    <button type="submit"
+                            name="update_profile"
+                            class="btn-confirm">
 
-<label>Contact Number</label>
+                        UPDATE PROFILE
 
-<input type="text"
-name="contact_no"
-value="<?php echo $user['contact_no']; ?>"
-required>
+                    </button>
 
+                </div>
 
-<div class="center-btn">
+            </form>
 
-<button type="submit"
-name="update_profile"
-class="btn-confirm">
+        </div>
 
-UPDATE PROFILE
-
-</button>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
