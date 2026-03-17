@@ -2,21 +2,20 @@
 include 'config/database.php';
 include 'includes/auth.php';
 
-if(!isset($_GET['id'])){
-header("Location: manage_advisories.php");
-exit();
+if (!isset($_GET['id'])) {
+    header("Location: manage_advisories.php");
+    exit();
 }
 
 $id = $_GET['id'];
 
 $stmt = $conn->prepare("
-DELETE FROM advisories WHERE id=?
+    DELETE FROM advisories WHERE id=?
 ");
 
-$stmt->bind_param("i",$id);
+$stmt->bind_param("i", $id);
 $stmt->execute();
 
 header("Location: manage_advisories.php");
 exit();
 ?>
-```
