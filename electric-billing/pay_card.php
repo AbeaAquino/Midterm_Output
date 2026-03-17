@@ -13,8 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $reference = "REF".rand(10000,99999);
 
-    $conn->query("INSERT INTO payments(user_id,bill_id,amount,payment_method,reference_number)
-                  VALUES($user_id,$bill_id,$amount,'$method','$reference')");
+   $payment_method_id = 3; // example: 3 = Bank/Card
+
+$stmt = $conn->prepare("
+INSERT INTO payments (user_id,bill_id,payment_method_id,amount,reference_number)
+VALUES (?,?,?,?,?)
+");
+
+$stmt->bind_param("iiiis",$user_id,$bill_id,$payment_method_id,$amount,$reference);
+$stmt->execute();
 
     $conn->query("UPDATE bills SET status='Paid' WHERE id=$bill_id");
 
@@ -52,15 +59,45 @@ $user = $user_query->get_result()->fetch_assoc();
     <link rel="stylesheet" href="assets/style.css">
 </head>
 
-<body class="bg-image">
+
 
 <header class="header">
-    <div class="logo-area">
-        <img src="assets/logo.png" class="logo">
+
+    <!-- CLICKABLE LOGO -->
+    <a href="home.php" class="logo-area" style="text-decoration:none; color:white;">
+        <img src="assets/logo.png" class="logo" alt="Logo">
         <div>
             <h1>ANGELES ELECTRIC POWER PORTAL</h1>
             <span>Powering Your Future</span>
         </div>
+    </a>
+
+    <div class="nav-links">
+
+        <a href="home.php"
+           class="<?= ($current_page == 'home.php') ? 'active' : '' ?>">
+           Home
+        </a>
+
+        <span class="divider">|</span>
+
+        <a href="view_bill.php"
+           class="<?= ($current_page == 'view_bill.php') ? 'active' : '' ?>">
+           View Bill
+        </a>
+
+        <span class="divider">|</span>
+
+        <a href="pay_bill.php"
+           class="<?= ($current_page == 'pay_bill.php') ? 'active' : '' ?>">
+           Pay Bill
+        </a>
+
+        <!-- ACCOUNT ICON -->
+        <a href="account.php">
+            <div class="account-icon">👤</div>
+        </a>
+
     </div>
 </header>
 
@@ -92,7 +129,7 @@ $user = $user_query->get_result()->fetch_assoc();
                         </div>
                         <div class="overview-box">
                             <label>Date</label>
-                            <h3><?php echo $bill['month']; ?></h3>
+                            <h3><?php echo $bill['billing_month']; ?></h3>
                         </div>
                     </div>
 
