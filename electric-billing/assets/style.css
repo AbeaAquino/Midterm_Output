@@ -630,12 +630,38 @@ body{
 }
 
 .bill-overview{
-    background:#f4f6fb;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:25px;
+    flex:1;
 }
 
+.overview-box{
+    background:#ffffff;
+    padding:35px;
+    border-radius:22px;
+    margin-bottom:30px;
+    border:1px solid #e6e6e6;
+    box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    transition:0.2s;
+}
+
+
+.overview-box label{
+    display:block;
+    font-size:14px;
+    color:#666;
+    margin-bottom:10px;
+}
+
+.overview-box h2{
+    font-size:26px;
+    font-weight:700;
+    color:#f4b400;
+}
+
+.overview-box h3{
+    font-size:22px;
+    font-weight:700;
+    color:#f4b400;
+}
 /* ACCOUNT PROFILE */
 .account-wrapper{
     display:flex;
@@ -908,18 +934,21 @@ body{
 }
 
 .btn-confirm{
+    display:inline-block;
     background:#ffd700;
     color:#0d2c6c;
-    padding:14px 60px;
+    padding:12px 26px;
     border:none;
-    font-weight:bold;
-    border-radius:6px;
+    border-radius:8px;
+    font-weight:700;
+    text-decoration:none;
     cursor:pointer;
-    transition:0.3s;
+    transition:0.25s;
 }
 
 .btn-confirm:hover{
     background:#ffcc00;
+    transform:translateY(-2px);
 }
 
 /* ACCESS SELECTION */
@@ -1268,4 +1297,106 @@ body{
 .card-form .btn-confirm {
     margin-top: 35px;
     padding: 14px 70px;
+}
+
+/* ==============================
+   ADVISORY NOTICE DESIGN
+============================== */
+
+.advisory-letterhead{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:15px;
+}
+
+.advisory-logo{
+width:55px;
+}
+
+.advisory-org{
+display:flex;
+flex-direction:column;
+}
+
+.org-name{
+font-weight:700;
+color:#d4a500;
+}
+
+.important{
+color:#e53935;
+font-weight:800;
+}
+
+/* DIVIDER LINE */
+.divider-line{
+height:1px;
+background:#dcdcdc;
+margin:18px 0;
+}
+
+/* TITLE */
+.advisory-title{
+font-size:30px;
+color:#1f4c94;
+font-weight:800;
+letter-spacing:1px;
+margin:20px 0 18px 0;
+}
+
+/* DATE / TIME / AREA */
+.advisory-info{
+margin-bottom:15px;
+}
+
+.info-row{
+display:flex;
+gap:8px;
+margin-bottom:8px;
+font-size:18px;
+font-weight:500;
+}
+
+.label{
+font-weight:700;
+font-size:19px;
+}
+
+/* DESCRIPTION */
+.advisory-desc{
+font-size:15px;
+line-height:1.6;
+margin-top:10px;
+color:#333;
+}
+
+/* WARNING BOX */
+.warning-box{
+display:flex;
+align-items:center;
+gap:12px;
+background:#fff4d6;
+padding:14px 16px;
+border-radius:10px;
+border-left:6px solid #f4b400;
+margin:18px 0;
+}
+
+.warning-icon{
+font-size:24px;
+color:#f4b400;
+}
+
+/* CONTACT INFO */
+.advisory-contact{
+text-align:center;
+margin-top:15px;
+font-size:15px;
+color:#444;
+}
+
+.advisory-contact strong{
+color:#1f4c94;
+font-weight:700;
 }
