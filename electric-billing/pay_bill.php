@@ -55,7 +55,7 @@ $bills = $bills_query->get_result();
                             <?php if($bills->num_rows > 0){ ?>
                                 <?php while($bill = $bills->fetch_assoc()){ ?>
                                     <option value="<?php echo $bill['id']; ?>">
-                                        <?php echo $bill['month']; ?> 
+                                        <?php echo $bill['billing_month']; ?> 
                                     </option>
                                 <?php } ?>
                             <?php } else { ?>
