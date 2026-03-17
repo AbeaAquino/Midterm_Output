@@ -22,116 +22,111 @@ $first_bill = $bills->fetch_assoc();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Statement of Account</title>
-<link rel="stylesheet" href="assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statement of Account</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 
 <?php include 'includes/header.php'; ?>
 
 <div class="page-content">
 
-<div class="statement-wrapper">
+    <div class="statement-wrapper">
 
-<div class="statement-card">
+        <div class="statement-card">
 
-<div class="statement-user">
+            <div class="statement-user">
 
-<div class="account-avatar">
-<img src="assets/user.png" alt="User">
-</div>
+                <div class="account-avatar">
+                    <img src="assets/user.png" alt="User">
+                </div>
 
-<div>
-<h3><?php echo $user['name']; ?></h3>
-<span><?php echo $user['email']; ?></span>
-</div>
+                <div>
+                    <h3><?php echo $user['name']; ?></h3>
+                    <span><?php echo $user['email']; ?></span>
+                </div>
 
-</div>
+            </div>
 
+            <div class="statement-top">
+                Statement Date:
+                <?php
+                if ($first_bill) {
+                    echo $first_bill['billing_month'];
+                } else {
+                    echo "No Bill Yet";
+                }
+                ?>
+            </div>
 
-<div class="statement-top">
-Statement Date:
-<?php
-if($first_bill){
-echo $first_bill['billing_month'];
-}else{
-echo "No Bill Yet";
-}
-?>
-</div>
+            <table class="statement-table">
 
+                <tr>
+                    <th>BILL STATEMENTS</th>
+                    <th>BALANCE</th>
+                    <th>STATUS</th>
+                </tr>
 
-<table class="statement-table">
+                <?php if ($first_bill) { ?>
 
-<tr>
-<th>BILL STATEMENTS</th>
-<th>BALANCE</th>
-<th>STATUS</th>
-</tr>
+                    <tr>
 
+                        <td><?php echo $first_bill['billing_month']; ?></td>
 
-<?php if($first_bill){ ?>
+                        <td class="<?php echo $first_bill['status'] == 'Unpaid' ? 'amount-unpaid' : 'amount-paid'; ?>">
+                            ₱ <?php echo number_format($first_bill['amount'], 2); ?>
+                        </td>
 
-<tr>
+                        <td>
+                            <?php if ($first_bill['status'] == 'Paid') { ?>
+                                <span class="badge-paid">Paid</span>
+                            <?php } else { ?>
+                                <span class="badge-unpaid">Unpaid</span>
+                            <?php } ?>
+                        </td>
 
-<td><?php echo $first_bill['billing_month']; ?></td>
+                    </tr>
 
-<td class="<?php echo $first_bill['status']=='Unpaid' ? 'amount-unpaid' : 'amount-paid'; ?>">
-₱ <?php echo number_format($first_bill['amount'],2); ?>
-</td>
+                    <?php while ($bill = $bills->fetch_assoc()) { ?>
 
-<td>
-<?php if($first_bill['status']=='Paid'){ ?>
-<span class="badge-paid">Paid</span>
-<?php } else { ?>
-<span class="badge-unpaid">Unpaid</span>
-<?php } ?>
-</td>
+                        <tr>
 
-</tr>
+                            <td><?php echo $bill['billing_month']; ?></td>
 
+                            <td class="<?php echo $bill['status'] == 'Unpaid' ? 'amount-unpaid' : 'amount-paid'; ?>">
+                                ₱ <?php echo number_format($bill['amount'], 2); ?>
+                            </td>
 
-<?php while($bill = $bills->fetch_assoc()){ ?>
+                            <td>
+                                <?php if ($bill['status'] == 'Paid') { ?>
+                                    <span class="badge-paid">Paid</span>
+                                <?php } else { ?>
+                                    <span class="badge-unpaid">Unpaid</span>
+                                <?php } ?>
+                            </td>
 
-<tr>
+                        </tr>
 
-<td><?php echo $bill['billing_month']; ?></td>
+                    <?php } ?>
 
-<td class="<?php echo $bill['status']=='Unpaid' ? 'amount-unpaid' : 'amount-paid'; ?>">
-₱ <?php echo number_format($bill['amount'],2); ?>
-</td>
+                <?php } else { ?>
 
-<td>
-<?php if($bill['status']=='Paid'){ ?>
-<span class="badge-paid">Paid</span>
-<?php } else { ?>
-<span class="badge-unpaid">Unpaid</span>
-<?php } ?>
-</td>
+                    <tr>
+                        <td colspan="3" style="text-align:center;padding:20px;">
+                            No bill records available.
+                        </td>
+                    </tr>
 
-</tr>
+                <?php } ?>
 
-<?php } ?>
+            </table>
 
+        </div>
 
-<?php } else { ?>
-
-<tr>
-<td colspan="3" style="text-align:center;padding:20px;">
-No bill records available.
-</td>
-</tr>
-
-<?php } ?>
-
-
-</table>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
@@ -139,4 +134,3 @@ No bill records available.
 
 </body>
 </html>
-
