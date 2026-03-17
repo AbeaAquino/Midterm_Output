@@ -65,139 +65,142 @@ $ads = $conn->query("
 
 <!DOCTYPE html>
 <html>
-<head>
-<title>Manage Advisories</title>
-<link rel="stylesheet" href="assets/style.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<head>
+    <title>Manage Advisories</title>
+    <link rel="stylesheet" href="assets/style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
 <header class="header">
 
-<div class="logo-area">
-<img src="assets/logo.png" class="logo">
-<div>
-<h1>ANGELES ELECTRIC CORPORATION</h1>
-<span>Powering Your Future</span>
-</div>
-</div>
+    <div class="logo-area">
+        <img src="assets/logo.png" class="logo">
+        <div>
+            <h1>ANGELES ELECTRIC CORPORATION</h1>
+            <span>Powering Your Future</span>
+        </div>
+    </div>
 
-<div class="nav-links">
-<a href="manage_bills.php">Manage Bills</a>
-<span class="divider">|</span>
-<a href="manage_advisories.php" class="active">Advisories</a>
-<span class="divider">|</span>
-<a href="logout.php">Logout</a>
-</div>
+    <div class="nav-links">
+        <a href="manage_bills.php">Manage Bills</a>
+        <span class="divider">|</span>
+        <a href="manage_advisories.php" class="active">Advisories</a>
+        <span class="divider">|</span>
+        <a href="logout.php">Logout</a>
+    </div>
 
 </header>
 
-
 <div class="dashboard-wrapper">
 
-<div class="manage-container">
+    <div class="manage-container">
 
-<!-- LEFT SIDE FORM -->
-<div class="manage-left">
+        <!-- LEFT SIDE FORM -->
+        <div class="manage-left">
 
-<h2>Create New Advisories</h2>
+            <h2>Create New Advisories</h2>
 
-<form method="POST">
+            <form method="POST">
 
-<label>Advisory Category</label>
-<select name="category" required>
-<?php while ($cat = $categories->fetch_assoc()) { ?>
-<option value="<?php echo $cat['id']; ?>">
-<?php echo $cat['category_name']; ?>
-</option>
-<?php } ?>
-</select>
+                <label>Advisory Category</label>
+                <select name="category" required>
 
-<label>Advisory Title</label>
-<input type="text" name="title" required>
+                    <?php while ($cat = $categories->fetch_assoc()) { ?>
 
-<label>Description</label>
-<input type="text" name="description" required>
+                        <option value="<?php echo $cat['id']; ?>">
+                            <?php echo $cat['category_name']; ?>
+                        </option>
 
-<label>Date</label>
-<input type="date" name="date" required>
+                    <?php } ?>
 
-<label>Start Time</label>
-<input type="time" name="start_time" required>
+                </select>
 
-<label>End Time</label>
-<input type="time" name="end_time" required>
+                <label>Advisory Title</label>
+                <input type="text" name="title" required>
 
-<label>Affected Areas</label>
-<input type="text" name="area">
+                <label>Description</label>
+                <input type="text" name="description" required>
 
-<label>Additional Notes</label>
-<input type="text" name="notes">
+                <label>Date</label>
+                <input type="date" name="date" required>
 
-<button type="submit" name="create_advisory" class="btn-confirm">
-Create Advisory
-</button>
+                <label>Start Time</label>
+                <input type="time" name="start_time" required>
 
-</form>
+                <label>End Time</label>
+                <input type="time" name="end_time" required>
 
-</div>
+                <label>Affected Areas</label>
+                <input type="text" name="area">
 
+                <label>Additional Notes</label>
+                <input type="text" name="notes">
 
-<!-- RIGHT SIDE TABLE -->
-<div class="manage-right">
+                <button type="submit"
+                        name="create_advisory"
+                        class="btn-confirm">
+                    Create Advisory
+                </button>
 
-<h2>All Advisories</h2>
+            </form>
 
-<table class="bill-table">
+        </div>
 
-<tr>
-<th>Advisory Category</th>
-<th>Title</th>
-<th>Date</th>
-<th>Action</th>
-</tr>
+        <!-- RIGHT SIDE TABLE -->
+        <div class="manage-right">
 
-<?php while ($row = $ads->fetch_assoc()) { ?>
+            <h2>All Advisories</h2>
 
-<tr>
+            <table class="bill-table">
 
-<td><?php echo htmlspecialchars($row['category_name']); ?></td>
+                <tr>
+                    <th>Advisory Category</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
 
-<td><?php echo htmlspecialchars($row['title']); ?></td>
+                <?php while ($row = $ads->fetch_assoc()) { ?>
 
-<td><?php echo date("M d, Y", strtotime($row['created_at'])); ?></td>
+                    <tr>
 
-<td>
+                        <td><?php echo htmlspecialchars($row['category_name']); ?></td>
 
-<a href="edit_advisory.php?id=<?php echo $row['id']; ?>"
-   title="Edit Advisory"
-   style="color:#90a4ae;margin-right:14px;font-size:15px;text-decoration:none;"
->
-<i class="fa-regular fa-pen-to-square"></i>
-</a>
+                        <td><?php echo htmlspecialchars($row['title']); ?></td>
 
-<a href="delete_advisory.php?id=<?php echo $row['id']; ?>"
-   onclick="return confirm('Delete this advisory?')"
-   title="Delete Advisory"
-   style="color:#90a4ae;font-size:15px;text-decoration:none;"
->
-<i class="fa-regular fa-trash-can"></i>
-</a>
+                        <td><?php echo date("M d, Y", strtotime($row['created_at'])); ?></td>
 
-</td>
+                        <td>
 
-</tr>
+                            <a href="edit_advisory.php?id=<?php echo $row['id']; ?>"
+                               title="Edit Advisory"
+                               style="color:#90a4ae;margin-right:14px;font-size:15px;text-decoration:none;">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
 
-<?php } ?>
+                            <a href="delete_advisory.php?id=<?php echo $row['id']; ?>"
+                               onclick="return confirm('Delete this advisory?')"
+                               title="Delete Advisory"
+                               style="color:#90a4ae;font-size:15px;text-decoration:none;">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </a>
 
-</table>
+                        </td>
 
-</div>
+                    </tr>
 
-</div>
+                <?php } ?>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
