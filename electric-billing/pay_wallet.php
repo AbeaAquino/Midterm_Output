@@ -67,7 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_stmt->bind_param("i", $bill_id);
     $update_stmt->execute();
 
-    header("Location: view_bill.php");
+    echo "<script>
+    alert('Payment Successful!');
+    window.location.href='view_bill.php';
+    </script>";
     exit();
 }
 
