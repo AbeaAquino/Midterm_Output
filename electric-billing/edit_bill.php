@@ -1,4 +1,3 @@
-
 <?php
 include 'config/database.php';
 
@@ -78,7 +77,7 @@ if (isset($_POST['update_bill'])) {
 
         <div class="manage-left">
 
-            <h2>Edit Bill</h2>
+            <h2>Update Bill</h2>
 
             <form method="POST">
 
