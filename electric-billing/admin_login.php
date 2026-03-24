@@ -1,14 +1,16 @@
 <?php
+
+
 include 'config/database.php';
 
 if(isset($_POST['admin_id'])){
 
     $admin_id = $_POST['admin_id'];
-    $password = $_POST['password'];
+    $password = trim($_POST['password']); // clean input
 
     if(!ctype_digit($admin_id)){
-    echo "<script>alert('Admin ID must be numbers only');</script>";
-    exit();
+        echo "<script>alert('Admin ID must be numbers only');</script>";
+        exit();
     }
 
     $stmt = $conn->prepare("SELECT id, password FROM admins WHERE admin_id=?");
@@ -17,15 +19,22 @@ if(isset($_POST['admin_id'])){
     $result = $stmt->get_result();
 
     if($result->num_rows > 0){
+
         $admin = $result->fetch_assoc();
 
-        if($password === $admin['password']){
-            $_SESSION['admin_logged_in'] = $admin['id'];
+        //  REAL LOGIN CHECK
+        if(password_verify($password, $admin['password'])){
+
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_id'] = $admin['id'];
+
             header("Location: manage_bills.php");
             exit();
+
         } else {
             echo "<script>alert('Wrong Password');</script>";
         }
+
     } else {
         echo "<script>alert('Admin not found');</script>";
     }
