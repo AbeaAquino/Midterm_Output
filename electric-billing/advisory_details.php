@@ -93,7 +93,7 @@ if (!empty($advisory['description'])) {
                 <img src="assets/logo.png" class="advisory-logo">
 
                 <div class="advisory-org">
-                    <span class="org-name">ANGELES ELECTRIC CORPORATION</span>
+                    <span class="org-name">ANGELES ELECTRIC POWER PORTAL</span>
                     <span class="important">IMPORTANT NOTICE</span>
                 </div>
 
