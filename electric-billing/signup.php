@@ -26,7 +26,7 @@ include 'config/database.php';
 if(isset($_POST['signup'])){
     $name     = $_POST['name'];
     $email    = $_POST['email'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $dob      = $_POST['dob'];
     $address  = $_POST['address'];
     $contact  = $_POST['contact_no'];
