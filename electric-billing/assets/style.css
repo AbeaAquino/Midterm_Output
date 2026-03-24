@@ -1400,3 +1400,36 @@ color:#444;
 color:#1f4c94;
 font-weight:700;
 }
+
+/* EDIT PROFILE FIX */
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #f8f9fc;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2f6ebc;
+    box-shadow: 0 0 0 2px rgba(47,110,188,0.1);
+}
