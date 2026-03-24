@@ -69,7 +69,7 @@ $categories = $conn->query("SELECT * FROM advisory_categories");
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
         <div>
-            <h1>ANGELES ELECTRIC CORPORATION</h1>
+            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
             <span>Powering Your Future</span>
         </div>
     </div>
@@ -129,7 +129,7 @@ $categories = $conn->query("SELECT * FROM advisory_categories");
                 <input type="time" name="start_time" required>
 
                 <label>End Time</label>
-                <input type="time" name="end_time" required>
+                <input type="time" name="end_time">
 
                 <label>Affected Areas</label>
                 <input type="text" name="area">
@@ -157,3 +157,4 @@ $categories = $conn->query("SELECT * FROM advisory_categories");
 
 </body>
 </html>
+
