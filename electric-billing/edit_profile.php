@@ -1,4 +1,3 @@
-```php id="7s6p2d"
 <?php
 include 'config/database.php';
 include 'includes/auth.php';
@@ -25,7 +24,7 @@ if (isset($_POST['update_profile'])) {
     $stmt->bind_param("sssi", $email, $address, $contact, $user_id);
     $stmt->execute();
 
-    header("Location: account.php");
+    echo "<script>alert('Profile updated successfully'); window.location.href='account.php';</script>";
     exit();
 }
 ?>
@@ -34,10 +33,8 @@ if (isset($_POST['update_profile'])) {
 <html>
 
 <head>
-
     <title>Edit Profile</title>
     <link rel="stylesheet" href="assets/style.css">
-
 </head>
 
 <body>
@@ -54,39 +51,38 @@ if (isset($_POST['update_profile'])) {
 
         <div class="glass-content">
 
-            <form method="POST">
+            <form method="POST" class="profile-form">
 
-                <label>Email Address</label>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email"
+                           name="email"
+                           value="<?php echo htmlspecialchars($user['email']); ?>"
+                           required>
+                </div>
 
-                <input type="email"
-                       name="email"
-                       value="<?php echo $user['email']; ?>"
-                       required>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text"
+                           name="address"
+                           value="<?php echo htmlspecialchars($user['address']); ?>"
+                           required>
+                </div>
 
-                <label>Address</label>
-
-                <input type="text"
-                       name="address"
-                       value="<?php echo $user['address']; ?>"
-                       required>
-
-                <label>Contact Number</label>
-
-                <input type="text"
-                       name="contact_no"
-                       value="<?php echo $user['contact_no']; ?>"
-                       required>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text"
+                           name="contact_no"
+                           value="<?php echo htmlspecialchars($user['contact_no']); ?>"
+                           required>
+                </div>
 
                 <div class="center-btn">
-
                     <button type="submit"
                             name="update_profile"
                             class="btn-confirm">
-
                         UPDATE PROFILE
-
                     </button>
-
                 </div>
 
             </form>
@@ -101,4 +97,3 @@ if (isset($_POST['update_profile'])) {
 
 </body>
 </html>
-```
