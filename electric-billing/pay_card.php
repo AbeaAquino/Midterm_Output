@@ -2,54 +2,91 @@
 include 'config/database.php';
 include 'includes/auth.php';
 
+$user_id = $_SESSION['user_id'];
+
+/* HANDLE PAYMENT */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $user_id = $_SESSION['user_id'];
-    $bill_id = $_POST['bill_id'];
-    $method  = $_POST['method'];
+    $bill_id     = $_POST['bill_id'];
+    $card_name   = $_POST['card_name'];
+    $card_number = $_POST['card_number'];
+    $cvv         = $_POST['cvv'];
+    $expiry      = $_POST['expiry'];
 
-    $bill = $conn->query("SELECT * FROM bills WHERE id=$bill_id")->fetch_assoc();
+    /* VALIDATION */
+    if (!preg_match("/^[a-zA-Z ]+$/", $card_name)) {
+        echo "<script>alert('Invalid card name');history.back();</script>";
+        exit();
+    }
+
+    if (!preg_match("/^[0-9]{16}$/", $card_number)) {
+        echo "<script>alert('Card number must be 16 digits');history.back();</script>";
+        exit();
+    }
+
+    if (!preg_match("/^[0-9]{3}$/", $cvv)) {
+        echo "<script>alert('Invalid CVV');history.back();</script>";
+        exit();
+    }
+
+    if (!preg_match("/^(0[1-9]|1[0-2])\/\d{2}$/", $expiry)) {
+        echo "<script>alert('Expiry must be MM/YY');history.back();</script>";
+        exit();
+    }
+
+    /* GET BILL (SECURE) */
+    $stmt = $conn->prepare("SELECT * FROM bills WHERE id=? AND user_id=?");
+    $stmt->bind_param("ii", $bill_id, $user_id);
+    $stmt->execute();
+    $bill = $stmt->get_result()->fetch_assoc();
+
+    if (!$bill) {
+        die("Invalid bill.");
+    }
+
     $amount = $bill['amount'];
+    $reference = "REF" . rand(10000, 99999);
+    $payment_method_id = 3;
 
-    $reference = "REF".rand(10000,99999);
+    /* INSERT PAYMENT */
+    $insert = $conn->prepare("
+        INSERT INTO payments (user_id, bill_id, payment_method_id, amount, reference_number)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    $insert->bind_param("iiiis", $user_id, $bill_id, $payment_method_id, $amount, $reference);
+    $insert->execute();
 
-   $payment_method_id = 3; // example: 3 = Bank/Card
+    /* UPDATE BILL */
+    $update = $conn->prepare("UPDATE bills SET status='Paid' WHERE id=?");
+    $update->bind_param("i", $bill_id);
+    $update->execute();
 
-$stmt = $conn->prepare("
-INSERT INTO payments (user_id,bill_id,payment_method_id,amount,reference_number)
-VALUES (?,?,?,?,?)
-");
-
-$stmt->bind_param("iiiis",$user_id,$bill_id,$payment_method_id,$amount,$reference);
-$stmt->execute();
-
-    $conn->query("UPDATE bills SET status='Paid' WHERE id=$bill_id");
-
-    header("Location: view_bill.php");
+    /* SUCCESS MESSAGE */
+    echo "<script>
+        alert('Payment Successful!');
+        window.location.href='view_bill.php';
+    </script>";
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
-
+/* CHECK PARAMS */
 if (!isset($_GET['bill_id']) || !isset($_GET['method'])) {
-    echo "Error: Missing payment information.";
-    exit();
+    die("Missing payment info.");
 }
 
 $bill_id = $_GET['bill_id'];
-$method = $_GET['method'];
 
 /* GET BILL */
-$bill_query = $conn->prepare("SELECT * FROM bills WHERE id=? AND user_id=?");
-$bill_query->bind_param("ii", $bill_id, $user_id);
-$bill_query->execute();
-$bill = $bill_query->get_result()->fetch_assoc();
+$stmt = $conn->prepare("SELECT * FROM bills WHERE id=? AND user_id=?");
+$stmt->bind_param("ii", $bill_id, $user_id);
+$stmt->execute();
+$bill = $stmt->get_result()->fetch_assoc();
 
 /* GET USER */
-$user_query = $conn->prepare("SELECT name, email FROM users WHERE id=?");
-$user_query->bind_param("i", $user_id);
-$user_query->execute();
-$user = $user_query->get_result()->fetch_assoc();
+$user_stmt = $conn->prepare("SELECT name,email FROM users WHERE id=?");
+$user_stmt->bind_param("i", $user_id);
+$user_stmt->execute();
+$user = $user_stmt->get_result()->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -59,115 +96,97 @@ $user = $user_query->get_result()->fetch_assoc();
     <link rel="stylesheet" href="assets/style.css">
 </head>
 
+<body>
 
-
-<header class="header">
-
-    <!-- CLICKABLE LOGO -->
-    <a href="home.php" class="logo-area" style="text-decoration:none; color:white;">
-        <img src="assets/logo.png" class="logo" alt="Logo">
-        <div>
-            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
-            <span>Powering Your Future</span>
-        </div>
-    </a>
-
-    <div class="nav-links">
-
-        <a href="home.php"
-           class="<?= ($current_page == 'home.php') ? 'active' : '' ?>">
-           Home
-        </a>
-
-        <span class="divider">|</span>
-
-        <a href="view_bill.php"
-           class="<?= ($current_page == 'view_bill.php') ? 'active' : '' ?>">
-           View Bill
-        </a>
-
-        <span class="divider">|</span>
-
-        <a href="pay_bill.php"
-           class="<?= ($current_page == 'pay_bill.php') ? 'active' : '' ?>">
-           Pay Bill
-        </a>
-
-        <!-- ACCOUNT ICON -->
-        <a href="account.php">
-            <div class="account-icon">👤</div>
-        </a>
-
-    </div>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <div class="page-content">
     <div class="glass-wrapper">
         <div class="glass-card">
+
             <div class="profile-header">
                 <div class="account-avatar">
-                    <img src="assets/user.png" alt="User">
+                    <img src="assets/user.png">
                 </div>
                 <div>
-                    <h3><?php echo $user['name']; ?></h3>
-                    <span><?php echo $user['email']; ?></span>
+                    <h3><?= $user['name']; ?></h3>
+                    <span><?= $user['email']; ?></span>
                 </div>
             </div>
 
-            <div class="glass-top">
-                Credit / Debit Card
-            </div>
+            <div class="glass-top">Card Payment</div>
 
             <div class="glass-content">
                 <div class="card-payment-layout">
 
-                    <!-- LEFT SIDE -->
+                    <!-- LEFT -->
                     <div class="bill-overview">
+
                         <div class="overview-box">
                             <label>Amount</label>
-                            <h2>₱ <?php echo number_format($bill['amount'], 2); ?></h2>
+                            <h2>₱ <?= number_format($bill['amount'], 2); ?></h2>
                         </div>
+
                         <div class="overview-box">
                             <label>Date</label>
-                            <h3><?php echo $bill['billing_month']; ?></h3>
+                            <h3><?= $bill['billing_month']; ?></h3>
                         </div>
+
                     </div>
 
-                    <!-- RIGHT SIDE -->
+                    <!-- RIGHT -->
                     <div class="card-form">
                         <form method="POST">
-                            <input type="hidden" name="bill_id" value="<?php echo $bill_id; ?>">
-                            <input type="hidden" name="method" value="Card">
+
+                            <input type="hidden" name="bill_id" value="<?= $bill_id ?>">
 
                             <label>Name on Card</label>
-                            <input type="text" name="card_name" placeholder="Cardholder Name" required>
+                            <input type="text" name="card_name" pattern="[A-Za-z ]+" required>
 
                             <label>Card Number</label>
-                            <input type="text" name="card_number" placeholder="0000 0000 0000 0000" required>
+                            <input type="text"
+                                   name="card_number"
+                                   maxlength="16"
+                                   pattern="[0-9]{16}"
+                                   required>
 
                             <div class="card-row">
+
                                 <div>
                                     <label>CVV</label>
-                                    <input type="text" name="cvv" placeholder="***" required>
+                                    <input type="text"
+                                           name="cvv"
+                                           maxlength="3"
+                                           pattern="[0-9]{3}"
+                                           required>
                                 </div>
+
                                 <div>
                                     <label>Expiry</label>
-                                    <input type="text" name="expiry" placeholder="MM/YY" required>
+                                    <input type="text"
+                                           name="expiry"
+                                           placeholder="MM/YY"
+                                           pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                                           required>
                                 </div>
+
                             </div>
+
                             <div class="center-btn">
-                                <button type="submit" class="btn-confirm">
-                                    PAY
-                                </button>
+                                <button type="submit" class="btn-confirm">PAY</button>
                             </div>
+
                         </form>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
 <?php include 'includes/footer.php'; ?>
+
 </body>
 </html>
