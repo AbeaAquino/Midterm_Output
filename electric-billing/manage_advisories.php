@@ -81,7 +81,7 @@ $ads = $conn->query("
     <div class="logo-area">
         <img src="assets/logo.png" class="logo">
         <div>
-            <h1>ANGELES ELECTRIC CORPORATION</h1>
+            <h1>ANGELES ELECTRIC POWER PORTAL</h1>
             <span>Powering Your Future</span>
         </div>
     </div>
@@ -133,7 +133,7 @@ $ads = $conn->query("
                 <input type="time" name="start_time" required>
 
                 <label>End Time</label>
-                <input type="time" name="end_time" required>
+                <input type="time" name="end_time">
 
                 <label>Affected Areas</label>
                 <input type="text" name="area">
@@ -177,19 +177,22 @@ $ads = $conn->query("
 
                         <td>
 
-                            <a href="edit_advisory.php?id=<?php echo $row['id']; ?>"
+                         <a href="edit_advisory.php?id=<?php echo $row['id']; ?>"
                                title="Edit Advisory"
-                               style="color:#90a4ae;margin-right:14px;font-size:15px;text-decoration:none;">
+                               style="color:#90a4ae; margin-right:8px; font-size:15px; text-decoration:none; transition:color 0.2s;"
+                               onmouseover="this.style.color='#1e5fa8'"
+                               onmouseout="this.style.color='#90a4ae'">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
 
                             <a href="delete_advisory.php?id=<?php echo $row['id']; ?>"
                                onclick="return confirm('Delete this advisory?')"
                                title="Delete Advisory"
-                               style="color:#90a4ae;font-size:15px;text-decoration:none;">
+                               style="color:#90a4ae; font-size:15px; text-decoration:none; transition:color 0.2s;"
+                               onmouseover="this.style.color='#e53935'"
+                               onmouseout="this.style.color='#90a4ae'">
                                 <i class="fa-regular fa-trash-can"></i>
                             </a>
-
                         </td>
 
                     </tr>
